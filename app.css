@@ -102,6 +102,7 @@ body {
   position: relative;
   z-index: 2;
 }
+.volume,
 .play-repeat,
 .play-back,
 .play-forward {
