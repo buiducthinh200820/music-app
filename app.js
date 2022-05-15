@@ -11,34 +11,12 @@ const musicImage = document.querySelector(".music-thumb img");
 const playRepeat=document.querySelector(".play-repeat");
 const volume=document.querySelector(".volume");
 
-playRepeat.addEventListener("click",function(){
-  if(isRepeat) 
-  {
-    isRepeat =false;
-    playRepeat.removeAttribute("style")
-  }
-  else
-    { 
-      isRepeat =true;
-      playRepeat.style.color ="#ffb86c"
-    }
-});
-
 
 let isPlaying = true;
 let indexSong = 0;
 let isRepeat =false;
 let timer;
-let isVolume =0;
-volume.addEventListener("click",function(){
-  if (isVolume) {
-    volume.innerHTML = `<ion-icon name="pause-circle"></ion-icon>`;
-    isPlaying = 0;
-  } else {
-    volume.innerHTML = `<ion-icon name="play"></ion-icon>`;
-    isPlaying = 1;
-  }
-});
+
 
 const musics = [
   {
@@ -81,19 +59,22 @@ const musics = [
 ];
 
 /**
+ * 
  * Music
  * id: 1
  * title: Holo
  * file: holo.mp3
  * image: unsplash
  */
+//next song 
 nextBtn.addEventListener("click", function () {
   changeSong(1);
 });
+//prev song
 prevBtn.addEventListener("click", function () {
   changeSong(-1);
 });
-
+//next, prev song
 function changeSong(dir) {
   if (dir === 1) {
     // next song
@@ -114,7 +95,20 @@ function changeSong(dir) {
   
   playPause();
 }
-//chạy bài tiếp theo 
+//repeat song
+playRepeat.addEventListener("click",function(){
+  if(isRepeat) 
+  {
+    isRepeat =false;
+    playRepeat.removeAttribute("style")
+  }
+  else
+    { 
+      isRepeat =true;
+      playRepeat.style.color ="#ffb86c"
+    }
+});
+
 song.addEventListener("ended",handEnderSong);
 function handEnderSong(){
   if(isRepeat){
@@ -125,7 +119,7 @@ function handEnderSong(){
   }
   
 }
-
+//chức năng play pause song
 playBtn.addEventListener("click", playPause);
 function playPause() {
   if (isPlaying) {
@@ -142,6 +136,7 @@ function playPause() {
     clearInterval(timer);
   }
 }
+//chức năng cập nhập time
 function displayTimer() {
   const { duration, currentTime } = song;
   //duratime: thời gian thực ,curentime :đã chaỵ được bao nhiêu s
@@ -154,17 +149,20 @@ function displayTimer() {
     durationTime.textContent = formatTimer(duration);
   }
 }
-function formatTimer(number) {// chuyển giây thành phút 
+//formast Time
+function formatTimer(number) {
   const minutes = Math.floor(number / 60);
   const seconds = Math.floor(number - minutes * 60);
   return `${minutes < 10 ? "0" + minutes : minutes}:${
     seconds < 10 ? "0" + seconds : seconds
   }`;
 }
+//cập nhập theo time
 rangeBar.addEventListener("change", handleChangeBar);
 function handleChangeBar() {
   song.currentTime = rangeBar.value;
 }
+//cập nhập dữ liệu khi thay đổi bài 
 function init(indexSong) {
   song.setAttribute("src", `./music/${musics[indexSong].file}`);
   musicImage.setAttribute("src", musics[indexSong].image);
